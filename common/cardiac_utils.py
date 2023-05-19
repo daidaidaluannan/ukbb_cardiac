@@ -20,10 +20,10 @@ import cv2
 import vtk
 import pandas as pd
 import matplotlib.pyplot as plt
-from vtk.util import numpy_support
+from vtkmodules.util import numpy_support
 from scipy import interpolate
 import skimage
-from ukbb_cardiac.common.image_utils import *
+from common.image_utils import *
 
 
 def approximate_contour(contour, factor=4, smooth=0.05, periodic=False):
@@ -76,7 +76,8 @@ def approximate_contour(contour, factor=4, smooth=0.05, periodic=False):
 def sa_pass_quality_control(seg_sa_name):
     """ Quality control for short-axis image segmentation """
     nim = nib.load(seg_sa_name)
-    seg_sa = nim.get_data()
+    #seg_sa = nim.get_data()
+    seg_sa = nim.get_fdata()
     X, Y, Z = seg_sa.shape[:3]
 
     # Label class in the segmentation
@@ -190,7 +191,8 @@ def determine_aha_coordinate_system(seg_sa, affine_sa):
     rv = get_largest_cc(rv).astype(np.uint8)
 
     # Extract epicardial contour
-    _, contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    #_, contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     epi_contour = contours[0][:, 0, :]
 
     # Find the septum, which is the intersection between LV and RV
@@ -360,7 +362,8 @@ def evaluate_wall_thickness(seg_name, output_name_stem, part=None):
     nim = nib.load(seg_name)
     Z = nim.header['dim'][3]
     affine = nim.affine
-    seg = nim.get_data()
+    #seg = nim.get_data()
+    seg = nim.get_fdata()
 
     # Label class in the segmentation
     label = {'BG': 0, 'LV': 1, 'Myo': 2, 'RV': 3}
@@ -417,11 +420,13 @@ def evaluate_wall_thickness(seg_name, output_name_stem, part=None):
         # Extract endocardial contour
         # Note: cv2 considers an input image as a Y x X array, which is different
         # from nibabel which assumes a X x Y array.
-        _, contours, _ = cv2.findContours(cv2.inRange(endo, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        #_, contours, _ = cv2.findContours(cv2.inRange(endo, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        contours, _ = cv2.findContours(cv2.inRange(endo, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         endo_contour = contours[0][:, 0, :]
 
         # Extract epicardial contour
-        _, contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        #_, contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         epi_contour = contours[0][:, 0, :]
 
         # Smooth the contours
@@ -556,7 +561,7 @@ def extract_myocardial_contour(seg_name, contour_name_stem, part=None, three_sli
     nim = nib.load(seg_name)
     X, Y, Z = nim.header['dim'][1:4]
     affine = nim.affine
-    seg = nim.get_data()
+    seg = nim.get_fdata()
 
     # Label class in the segmentation
     label = {'BG': 0, 'LV': 1, 'Myo': 2, 'RV': 3}
@@ -612,7 +617,8 @@ def extract_myocardial_contour(seg_name, contour_name_stem, part=None, three_sli
         lv_centre = np.dot(affine, np.array([cx, cy, z, 1]))[:3]
 
         # Extract epicardial contour
-        _, contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        #_, contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        contours, _ = cv2.findContours(cv2.inRange(epi, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         epi_contour = contours[0][:, 0, :]
         epi_contour = approximate_contour(epi_contour, periodic=True)
 
@@ -666,7 +672,8 @@ def extract_myocardial_contour(seg_name, contour_name_stem, part=None, three_sli
         # Extract endocardial contour
         # Note: cv2 considers an input image as a Y x X array, which is different
         # from nibabel which assumes a X x Y array.
-        _, contours, _ = cv2.findContours(cv2.inRange(endo, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        #_, contours, _ = cv2.findContours(cv2.inRange(endo, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        contours, _ = cv2.findContours(cv2.inRange(endo, 1, 1), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         endo_contour = contours[0][:, 0, :]
         endo_contour = approximate_contour(endo_contour, periodic=True)
 

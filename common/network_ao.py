@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-from ukbb_cardiac.common.network import *
+from network import *
 
 
 def UNet(images, n_class, n_level, n_filter, n_block, training):

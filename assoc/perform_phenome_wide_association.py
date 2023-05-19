@@ -24,8 +24,8 @@ import math
 import re
 import csv
 import statsmodels.api as sm
-from ukbb_cardiac.data.ukb_field_categories import *
-from ukbb_cardiac.assoc.my_fdr import fdr_threshold
+from data.ukb_field_categories import *
+from assoc.my_fdr import fdr_threshold
 import seaborn as sns
 import matplotlib as mpl
 import matplotlib.pyplot as plt

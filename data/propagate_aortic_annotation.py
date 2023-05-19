@@ -19,7 +19,7 @@ import os
 import sys
 import nibabel as nib
 import numpy as np
-from ukbb_cardiac.common.image_utils import *
+from common.image_utils import *
 
 
 def infer_time_frame(image_name, image_fr_name):

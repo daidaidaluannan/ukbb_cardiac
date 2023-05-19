@@ -15,7 +15,11 @@
 import os
 import argparse
 import pandas as pd
-from ukbb_cardiac.common.cardiac_utils import *
+
+import sys
+sys.path.append('/home/wcy/python_code/ukbb_cardiac')
+from common.cardiac_utils import *
+
 
 
 if __name__ == '__main__':

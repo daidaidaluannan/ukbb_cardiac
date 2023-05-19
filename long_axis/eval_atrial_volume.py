@@ -19,7 +19,7 @@ import pandas as pd
 import nibabel as nib
 import vtk
 import math
-from ukbb_cardiac.common.cardiac_utils import atrium_pass_quality_control, evaluate_atrial_area_length
+from common.cardiac_utils import atrium_pass_quality_control, evaluate_atrial_area_length
 
 
 if __name__ == '__main__':

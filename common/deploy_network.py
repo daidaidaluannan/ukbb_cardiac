@@ -18,8 +18,8 @@ import math
 import numpy as np
 import nibabel as nib
 import tensorflow as tf
-from ukbb_cardiac.common.image_utils import rescale_intensity
-
+from image_utils import rescale_intensity
+tf = tf.compat.v1
 
 """ Deployment parameters """
 FLAGS = tf.app.flags.FLAGS
@@ -82,7 +82,8 @@ if __name__ == '__main__':
                 # Read the image
                 print('  Reading {} ...'.format(image_name))
                 nim = nib.load(image_name)
-                image = nim.get_data()
+                image = nim.get_fdata()
+                #image = nim.get_data()
                 X, Y, Z, T = image.shape
                 orig_image = image
 

@@ -18,9 +18,9 @@ import random
 import numpy as np
 import nibabel as nib
 import tensorflow as tf
-from ukbb_cardiac.common.network import build_FCN
-from ukbb_cardiac.common.image_utils import tf_categorical_accuracy, tf_categorical_dice
-from ukbb_cardiac.common.image_utils import crop_image, rescale_intensity, data_augmenter
+from network import build_FCN
+from image_utils import tf_categorical_accuracy, tf_categorical_dice
+from image_utils import crop_image, rescale_intensity, data_augmenter
 
 
 """ Parameters """

@@ -17,8 +17,10 @@ import numpy as np
 import nibabel as nib
 import pandas as pd
 import argparse
-from ukbb_cardiac.common.cardiac_utils import aorta_pass_quality_control
 
+import sys
+sys.path.append('/home/wcy/python_code/ukbb_cardiac')
+from  common.cardiac_utils import aorta_pass_quality_control
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
